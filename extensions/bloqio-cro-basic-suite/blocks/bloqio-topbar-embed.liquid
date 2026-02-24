@@ -1,0 +1,254 @@
+{%- comment -%}Bloqio TopBar PRO — build messages string (Simple vs Avanzado){%- endcomment -%}
+{%- assign bloqio_messages = '' -%}
+{%- if block.settings.messages_mode == 'fields' -%}
+  {%- assign bloqio_count = block.settings.messages_count | default: 3 | plus: 0 -%}
+  {%- capture bloqio_msg_capture -%}
+    {%- if bloqio_count >= 1 and block.settings.msg_1_text != blank -%}{{ block.settings.msg_1_icon }}: {{ block.settings.msg_1_text | strip }}|{%- endif -%}
+    {%- if bloqio_count >= 2 and block.settings.msg_2_text != blank -%}{{ block.settings.msg_2_icon }}: {{ block.settings.msg_2_text | strip }}|{%- endif -%}
+    {%- if bloqio_count >= 3 and block.settings.msg_3_text != blank -%}{{ block.settings.msg_3_icon }}: {{ block.settings.msg_3_text | strip }}|{%- endif -%}
+    {%- if bloqio_count >= 4 and block.settings.msg_4_text != blank -%}{{ block.settings.msg_4_icon }}: {{ block.settings.msg_4_text | strip }}|{%- endif -%}
+    {%- if bloqio_count >= 5 and block.settings.msg_5_text != blank -%}{{ block.settings.msg_5_icon }}: {{ block.settings.msg_5_text | strip }}|{%- endif -%}
+  {%- endcapture -%}
+  {%- assign bloqio_messages = bloqio_msg_capture | strip | remove_last: '|' -%}
+{%- else -%}
+  {%- assign bloqio_messages = block.settings.messages | strip -%}
+{%- endif -%}
+<div
+  id="bloqio-topbar"
+  class="bloqio-topbar"
+  data-enabled="{{ block.settings.enabled }}"
+  data-sticky="{{ block.settings.sticky }}"
+  data-rotate="{{ block.settings.rotate }}"
+  data-rotate-seconds="{{ block.settings.rotate_seconds }}"
+  data-dismiss="{{ block.settings.dismiss }}"
+  data-remember-hours="{{ block.settings.remember_hours }}"
+  data-hide-mobile="{{ block.settings.hide_mobile }}"
+  data-hide-desktop="{{ block.settings.hide_desktop }}"
+  data-icon-enabled="{{ block.settings.icon_enabled }}"
+  data-icon-size="{{ block.settings.icon_size }}"
+  data-icon-gap="{{ block.settings.icon_gap }}"
+  data-icon-color="{{ block.settings.icon_color }}"
+  data-countdown="{{ block.settings.countdown }}"
+  data-countdown-in-rotation="{{ block.settings.countdown_in_rotation }}"
+  data-countdown-end="{{ block.settings.countdown_year }}-{{ block.settings.countdown_month }}-{{ block.settings.countdown_day }} {{ block.settings.countdown_hour }}:{{ block.settings.countdown_minute }}"
+  data-countdown-prefix="{{ block.settings.countdown_prefix | escape }}"
+  data-countdown-suffix="{{ block.settings.countdown_suffix | escape }}"
+  data-messages='{{ bloqio_messages | replace: "'", "&#39;" | replace: '"', '&quot;' }}'
+  data-cta-style="{{ block.settings.cta_style }}"
+  style="
+    --bt-bg: {{ block.settings.bg }};
+    --bt-text: {{ block.settings.text }};
+    --bt-accent: {{ block.settings.accent }};
+    --bt-h: {{ block.settings.height }}px;
+    --bt-px: {{ block.settings.pad_x }}px;
+    --bt-radius: {{ block.settings.radius }}px;
+    --bt-icon-size: {{ block.settings.icon_size }}px;
+    --bt-icon-gap: {{ block.settings.icon_gap }}px;
+    --bt-icon-color: {{ block.settings.icon_color }};
+    --bt-cta-bg: {{ block.settings.cta_bg }};
+    --bt-cta-text: {{ block.settings.cta_text_color }};
+    --bt-cta-border: {{ block.settings.cta_border_color }};
+    --bt-cta-radius: {{ block.settings.cta_radius }}px;
+    --bt-cta-px: {{ block.settings.cta_pad_x }}px;
+    --bt-cta-py: {{ block.settings.cta_pad_y }}px;
+  "
+>
+  <div class="bloqio-topbar__inner">
+    <div class="bloqio-topbar__msg" aria-live="polite"></div>
+
+    <a
+      class="bloqio-topbar__cta {% if block.settings.cta_style == 'button' %}is-button{% else %}is-link{% endif %}"
+      href="{{ block.settings.cta_url }}"
+      {% if block.settings.cta_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+      {% if block.settings.cta_url == blank %}aria-disabled="true"{% endif %}
+    >
+      {{ block.settings.cta_text | escape }}
+    </a>
+
+    <button class="bloqio-topbar__x" type="button" aria-label="Cerrar" title="Cerrar">
+      ×
+    </button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bloqio TopBar PRO",
+  "target": "body",
+  "stylesheet": "bloqio-topbar.css",
+  "javascript": "bloqio-topbar.js",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Activar Top Bar", "default": true },
+    { "type": "checkbox", "id": "sticky", "label": "Sticky (pegada arriba)", "default": true },
+
+    { "type": "checkbox", "id": "hide_mobile", "label": "Ocultar en mobile", "default": false },
+    { "type": "checkbox", "id": "hide_desktop", "label": "Ocultar en desktop", "default": false },
+
+    { "type": "header", "content": "Mensajes" },
+    { "type": "select", "id": "messages_mode", "label": "Modo de mensajes", "default": "fields",
+      "options": [
+        { "value": "fields", "label": "Simple (campos)" },
+        { "value": "advanced", "label": "Avanzado (texto con |)" }
+      ]
+    },
+    { "type": "range", "id": "messages_count", "label": "Numero de mensajes (Simple)", "min": 1, "max": 5, "step": 1, "default": 3 },
+    { "type": "textarea", "id": "messages", "label": "Mensajes (Avanzado: icono: texto | icono: texto)", "info": "Solo si usas modo Avanzado. Iconos: truck, shield, lock, star, bolt, tag. Ej: truck: Envío 24–72h|shield: Garantía|lock: Pago seguro", "default": "truck: Envio rapido 24-72h|shield: Garantia de satisfaccion|lock: Pago 100% seguro" },
+    { "type": "select", "id": "msg_1_icon", "label": "Mensaje 1: icono", "default": "truck",
+      "options": [
+        { "value": "truck", "label": "truck (envío)" },
+        { "value": "shield", "label": "shield (garantía)" },
+        { "value": "lock", "label": "lock (pago seguro)" },
+        { "value": "star", "label": "star (top rated)" },
+        { "value": "bolt", "label": "bolt (promo)" },
+        { "value": "tag", "label": "tag (oferta)" }
+      ]
+    },
+    { "type": "text", "id": "msg_1_text", "label": "Mensaje 1: texto", "default": "Envio rapido 24–72h" },
+
+    { "type": "select", "id": "msg_2_icon", "label": "Mensaje 2: icono", "default": "shield",
+      "options": [
+        { "value": "truck", "label": "truck (envío)" },
+        { "value": "shield", "label": "shield (garantía)" },
+        { "value": "lock", "label": "lock (pago seguro)" },
+        { "value": "star", "label": "star (top rated)" },
+        { "value": "bolt", "label": "bolt (promo)" },
+        { "value": "tag", "label": "tag (oferta)" }
+      ]
+    },
+    { "type": "text", "id": "msg_2_text", "label": "Mensaje 2: texto", "default": "Garantia de satisfaccion" },
+
+    { "type": "select", "id": "msg_3_icon", "label": "Mensaje 3: icono", "default": "lock",
+      "options": [
+        { "value": "truck", "label": "truck (envío)" },
+        { "value": "shield", "label": "shield (garantía)" },
+        { "value": "lock", "label": "lock (pago seguro)" },
+        { "value": "star", "label": "star (top rated)" },
+        { "value": "bolt", "label": "bolt (promo)" },
+        { "value": "tag", "label": "tag (oferta)" }
+      ]
+    },
+    { "type": "text", "id": "msg_3_text", "label": "Mensaje 3: texto", "default": "Pago 100% seguro" },
+
+    { "type": "select", "id": "msg_4_icon", "label": "Mensaje 4: icono", "default": "star",
+      "options": [
+        { "value": "truck", "label": "truck (envío)" },
+        { "value": "shield", "label": "shield (garantía)" },
+        { "value": "lock", "label": "lock (pago seguro)" },
+        { "value": "star", "label": "star (top rated)" },
+        { "value": "bolt", "label": "bolt (promo)" },
+        { "value": "tag", "label": "tag (oferta)" }
+      ]
+    },
+    { "type": "text", "id": "msg_4_text", "label": "Mensaje 4: texto", "default": "Top rated" },
+
+    { "type": "select", "id": "msg_5_icon", "label": "Mensaje 5: icono", "default": "tag",
+      "options": [
+        { "value": "truck", "label": "truck (envío)" },
+        { "value": "shield", "label": "shield (garantía)" },
+        { "value": "lock", "label": "lock (pago seguro)" },
+        { "value": "star", "label": "star (top rated)" },
+        { "value": "bolt", "label": "bolt (promo)" },
+        { "value": "tag", "label": "tag (oferta)" }
+      ]
+    },
+    { "type": "text", "id": "msg_5_text", "label": "Mensaje 5: texto", "default": "Oferta limitada" },
+    { "type": "checkbox", "id": "rotate", "label": "Rotar mensajes automaticamente", "default": true },
+    { "type": "range", "id": "rotate_seconds", "label": "Cada (segundos)", "min": 2, "max": 12, "step": 1, "default": 5 },
+
+    { "type": "checkbox", "id": "countdown", "label": "Mostrar contador", "default": false },
+    { "type": "checkbox", "id": "countdown_in_rotation", "label": "Incluir contador en la rotación de mensajes", "default": false },
+
+    { "type": "select", "id": "countdown_year", "label": "Año", "default": "2026",
+      "options": [
+        { "value": "2025", "label": "2025" },
+        { "value": "2026", "label": "2026" },
+        { "value": "2027", "label": "2027" },
+        { "value": "2028", "label": "2028" },
+        { "value": "2029", "label": "2029" }
+      ]
+    },
+    { "type": "select", "id": "countdown_month", "label": "Mes", "default": "03",
+      "options": [
+        { "value": "01", "label": "01" },
+        { "value": "02", "label": "02" },
+        { "value": "03", "label": "03" },
+        { "value": "04", "label": "04" },
+        { "value": "05", "label": "05" },
+        { "value": "06", "label": "06" },
+        { "value": "07", "label": "07" },
+        { "value": "08", "label": "08" },
+        { "value": "09", "label": "09" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ]
+    },
+    { "type": "select", "id": "countdown_day", "label": "Día", "default": "31",
+      "options": [
+        { "value": "01", "label": "01" }, { "value": "02", "label": "02" }, { "value": "03", "label": "03" }, { "value": "04", "label": "04" }, { "value": "05", "label": "05" },
+        { "value": "06", "label": "06" }, { "value": "07", "label": "07" }, { "value": "08", "label": "08" }, { "value": "09", "label": "09" }, { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" }, { "value": "12", "label": "12" }, { "value": "13", "label": "13" }, { "value": "14", "label": "14" }, { "value": "15", "label": "15" },
+        { "value": "16", "label": "16" }, { "value": "17", "label": "17" }, { "value": "18", "label": "18" }, { "value": "19", "label": "19" }, { "value": "20", "label": "20" },
+        { "value": "21", "label": "21" }, { "value": "22", "label": "22" }, { "value": "23", "label": "23" }, { "value": "24", "label": "24" }, { "value": "25", "label": "25" },
+        { "value": "26", "label": "26" }, { "value": "27", "label": "27" }, { "value": "28", "label": "28" }, { "value": "29", "label": "29" }, { "value": "30", "label": "30" },
+        { "value": "31", "label": "31" }
+      ]
+    },
+    { "type": "select", "id": "countdown_hour", "label": "Hora (00-23)", "default": "23",
+      "options": [
+        { "value": "00", "label": "00" }, { "value": "01", "label": "01" }, { "value": "02", "label": "02" }, { "value": "03", "label": "03" }, { "value": "04", "label": "04" }, { "value": "05", "label": "05" },
+        { "value": "06", "label": "06" }, { "value": "07", "label": "07" }, { "value": "08", "label": "08" }, { "value": "09", "label": "09" }, { "value": "10", "label": "10" }, { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }, { "value": "13", "label": "13" }, { "value": "14", "label": "14" }, { "value": "15", "label": "15" }, { "value": "16", "label": "16" }, { "value": "17", "label": "17" },
+        { "value": "18", "label": "18" }, { "value": "19", "label": "19" }, { "value": "20", "label": "20" }, { "value": "21", "label": "21" }, { "value": "22", "label": "22" }, { "value": "23", "label": "23" }
+      ]
+    },
+    { "type": "select", "id": "countdown_minute", "label": "Minuto (00-59)", "default": "59",
+      "options": [
+        { "value": "00", "label": "00" }, { "value": "05", "label": "05" }, { "value": "10", "label": "10" }, { "value": "15", "label": "15" }, { "value": "20", "label": "20" }, { "value": "25", "label": "25" },
+        { "value": "30", "label": "30" }, { "value": "35", "label": "35" }, { "value": "40", "label": "40" }, { "value": "45", "label": "45" }, { "value": "50", "label": "50" }, { "value": "55", "label": "55" },
+        { "value": "59", "label": "59" }
+      ]
+    },
+
+    { "type": "text", "id": "countdown_prefix", "label": "Prefijo del contador", "default": "Promo termina en" },
+    { "type": "text", "id": "countdown_suffix", "label": "Sufijo del contador", "default": "Finaliza pronto" },
+
+    { "type": "header", "content": "CTA" },
+    { "type": "text", "id": "cta_text", "label": "CTA (texto)", "default": "Ver promo" },
+    { "type": "url", "id": "cta_url", "label": "CTA (link)" },
+    { "type": "select", "id": "cta_style", "label": "Estilo CTA", "default": "link",
+      "options": [
+        { "value": "link", "label": "Link" },
+        { "value": "button", "label": "Boton" }
+      ]
+    },
+    { "type": "color", "id": "cta_bg", "label": "CTA fondo", "default": "#FFFFFF" },
+    { "type": "color", "id": "cta_text_color", "label": "CTA texto", "default": "#111111" },
+    { "type": "color", "id": "cta_border_color", "label": "CTA borde", "default": "#FFFFFF" },
+    { "type": "range", "id": "cta_radius", "label": "CTA radio", "min": 0, "max": 24, "step": 2, "default": 10 },
+    { "type": "range", "id": "cta_pad_x", "label": "CTA padding X", "min": 8, "max": 28, "step": 2, "default": 14 },
+    { "type": "range", "id": "cta_pad_y", "label": "CTA padding Y", "min": 4, "max": 18, "step": 2, "default": 8 },
+
+    { "type": "checkbox", "id": "cta_new_tab", "label": "Abrir CTA en nueva pestana", "default": false },
+
+    { "type": "header", "content": "Dismiss" },
+    { "type": "checkbox", "id": "dismiss", "label": "Permitir cerrar", "default": true },
+    { "type": "range", "id": "remember_hours", "label": "Recordar cierre (horas)", "min": 1, "max": 72, "step": 1, "default": 24 },
+
+    { "type": "header", "content": "Iconos (por mensaje)" },
+    { "type": "checkbox", "id": "icon_enabled", "label": "Mostrar iconos", "default": true },
+    { "type": "range", "id": "icon_size", "label": "Tamano icono", "min": 12, "max": 22, "step": 1, "default": 16 },
+    { "type": "range", "id": "icon_gap", "label": "Espacio icono-texto", "min": 6, "max": 18, "step": 1, "default": 10 },
+    { "type": "color", "id": "icon_color", "label": "Color icono", "default": "#FFFFFF" },
+
+    { "type": "header", "content": "Estilo" },
+    { "type": "range", "id": "height", "label": "Altura", "min": 28, "max": 64, "step": 2, "default": 40 },
+    { "type": "range", "id": "pad_x", "label": "Padding horizontal", "min": 8, "max": 40, "step": 2, "default": 16 },
+    { "type": "range", "id": "radius", "label": "Radio (bordes)", "min": 0, "max": 18, "step": 2, "default": 0 },
+
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#111111" },
+    { "type": "color", "id": "text", "label": "Texto", "default": "#FFFFFF" },
+    { "type": "color", "id": "accent", "label": "Acento", "default": "#FFFFFF" }
+  ]
+}
+{% endschema %}

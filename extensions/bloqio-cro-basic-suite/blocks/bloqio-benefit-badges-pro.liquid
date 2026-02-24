@@ -1,0 +1,190 @@
+<section
+  class="bloqio-badges"
+  style="
+    --bb-pad-y: {{ block.settings.padding_y }}px;
+    --bb-max: {{ block.settings.max_width }}px;
+    --bb-cols: {{ block.settings.cols_desktop }};
+    --bb-gap-x: {{ block.settings.gap_x }}px;
+    --bb-gap-y: {{ block.settings.gap_y }}px;
+
+    --bb-bg: {{ block.settings.bg }};
+    --bb-text: {{ block.settings.text }};
+    --bb-muted: {{ block.settings.muted }};
+    --bb-border: {{ block.settings.border }};
+    --bb-radius: {{ block.settings.radius }}px;
+    --bb-border-w: {{ block.settings.border_w }}px;
+    --bb-shadow: {% if block.settings.shadow %}0 10px 26px rgba(0,0,0,.08){% else %}none{% endif %};
+
+    --bb-icon: {{ block.settings.icon_color }};
+    --bb-icon-size: {{ block.settings.icon_size }}px;
+    --bb-icon-stroke: {{ block.settings.icon_stroke }};
+  "
+>
+  <div class="bloqio-badges__inner">
+    {% if block.settings.heading != blank %}
+      <div class="bloqio-badges__header">
+        <h2 class="bloqio-badges__heading">{{ block.settings.heading | escape }}</h2>
+        {% if block.settings.subheading != blank %}
+          <p class="bloqio-badges__subheading">{{ block.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="bloqio-badges__grid">
+      {% for i in (1..6) %}
+        {% assign t_id = 't_' | append: i %}
+        {% assign d_id = 'd_' | append: i %}
+        {% assign ic_id = 'icon_' | append: i %}
+
+        {% assign t = block.settings[t_id] %}
+        {% assign d = block.settings[d_id] %}
+        {% assign ic = block.settings[ic_id] %}
+
+        {% if t != blank %}
+          <div class="bloqio-badges__item">
+            <div class="bloqio-badges__icon" aria-hidden="true">
+              {% case ic %}
+                {% when 'truck' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7z"/><path d="M7 19a1.5 1.5 0 1 0 0 .01"/><path d="M18 19a1.5 1.5 0 1 0 0 .01"/></svg>
+                {% when 'shield' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 9-8 10C7.5 21 4 17 4 12V6z"/></svg>
+                {% when 'lock' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M7 11V8a5 5 0 0 1 10 0v3"/><path d="M6 11h12v10H6z"/></svg>
+                {% when 'leaf' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M20 4c-8 0-14 6-14 14 8 0 14-6 14-14Z"/><path d="M6 18c2-3 6-6 12-8"/></svg>
+                {% when 'star' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7 7 .6-5.3 4.6 1.7 7.2L12 18l-6.4 3.4 1.7-7.2L2 9.6 9 9z"/></svg>
+                {% when 'refresh' %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12"/><path d="M12 6v12"/></svg>
+              {% endcase %}
+            </div>
+
+            <div class="bloqio-badges__content">
+              <div class="bloqio-badges__title">{{ t | escape }}</div>
+              {% if d != blank %}
+                <div class="bloqio-badges__desc">{{ d }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bloqio Badges PRO",
+  "target": "section",
+  "stylesheet": "bloqio-benefit-badges.css",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "default": "Beneficios" },
+    { "type": "richtext", "id": "subheading", "label": "Subtítulo", "default": "<p>Lo que obtienes al comprar con nosotros</p>" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_y", "label": "Padding vertical", "min": 0, "max": 60, "step": 4, "default": 24 },
+    { "type": "range", "id": "max_width", "label": "Ancho máx. contenedor", "min": 680, "max": 1400, "step": 40, "default": 1080 },
+    { "type": "range", "id": "cols_desktop", "label": "Columnas (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "gap_x", "label": "Espaciado horizontal", "min": 8, "max": 40, "step": 2, "default": 16 },
+    { "type": "range", "id": "gap_y", "label": "Espaciado vertical", "min": 8, "max": 40, "step": 2, "default": 16 },
+
+    { "type": "header", "content": "Box" },
+    { "type": "range", "id": "border_w", "label": "Grosor borde", "min": 0, "max": 6, "step": 1, "default": 1 },
+    { "type": "range", "id": "radius", "label": "Radio", "min": 0, "max": 28, "step": 2, "default": 14 },
+    { "type": "checkbox", "id": "shadow", "label": "Sombra suave", "default": false },
+
+    { "type": "header", "content": "Colores" },
+    { "type": "color", "id": "bg", "label": "Fondo item", "default": "#ffffff" },
+    { "type": "color", "id": "border", "label": "Borde", "default": "#e6e6e6" },
+    { "type": "color", "id": "text", "label": "Texto", "default": "#111111" },
+    { "type": "color", "id": "muted", "label": "Texto secundario", "default": "#6b6b6b" },
+
+    { "type": "header", "content": "Iconos" },
+    { "type": "range", "id": "icon_size", "label": "Tamaño icono", "min": 14, "max": 28, "step": 1, "default": 18 },
+    { "type": "range", "id": "icon_stroke", "label": "Grosor trazo", "min": 1, "max": 4, "step": 1, "default": 2 },
+    { "type": "color", "id": "icon_color", "label": "Color icono", "default": "#111111" },
+
+    { "type": "header", "content": "Badges (hasta 6)" },
+
+    { "type": "select", "id": "icon_1", "label": "Icono 1", "default": "truck",
+      "options": [
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "star", "label": "Star" },
+        { "value": "refresh", "label": "Refresh" }
+      ]
+    },
+    { "type": "text", "id": "t_1", "label": "Título 1", "default": "Envío rápido" },
+    { "type": "richtext", "id": "d_1", "label": "Descripción 1", "default": "<p>Recibe en 24–72 horas en principales ciudades.</p>" },
+
+    { "type": "select", "id": "icon_2", "label": "Icono 2", "default": "shield",
+      "options": [
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "star", "label": "Star" },
+        { "value": "refresh", "label": "Refresh" }
+      ]
+    },
+    { "type": "text", "id": "t_2", "label": "Título 2", "default": "Garantía" },
+    { "type": "richtext", "id": "d_2", "label": "Descripción 2", "default": "<p>Compra con confianza, te respaldamos.</p>" },
+
+    { "type": "select", "id": "icon_3", "label": "Icono 3", "default": "lock",
+      "options": [
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "star", "label": "Star" },
+        { "value": "refresh", "label": "Refresh" }
+      ]
+    },
+    { "type": "text", "id": "t_3", "label": "Título 3", "default": "Pago seguro" },
+    { "type": "richtext", "id": "d_3", "label": "Descripción 3", "default": "<p>Tus pagos protegidos en todo momento.</p>" },
+
+    { "type": "select", "id": "icon_4", "label": "Icono 4", "default": "leaf",
+      "options": [
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "star", "label": "Star" },
+        { "value": "refresh", "label": "Refresh" }
+      ]
+    },
+    { "type": "text", "id": "t_4", "label": "Título 4", "default": "Ecológicos" },
+    { "type": "richtext", "id": "d_4", "label": "Descripción 4", "default": "<p>Reduce tu huella de carbono.</p>" },
+
+    { "type": "select", "id": "icon_5", "label": "Icono 5", "default": "star",
+      "options": [
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "star", "label": "Star" },
+        { "value": "refresh", "label": "Refresh" }
+      ]
+    },
+    { "type": "text", "id": "t_5", "label": "Título 5", "default": "Top rated" },
+    { "type": "richtext", "id": "d_5", "label": "Descripción 5", "default": "<p>Clientes felices con su compra.</p>" },
+
+    { "type": "select", "id": "icon_6", "label": "Icono 6", "default": "refresh",
+      "options": [
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "star", "label": "Star" },
+        { "value": "refresh", "label": "Refresh" }
+      ]
+    },
+    { "type": "text", "id": "t_6", "label": "Título 6", "default": "Devoluciones" },
+    { "type": "richtext", "id": "d_6", "label": "Descripción 6", "default": "<p>Proceso simple y rápido.</p>" }
+  ]
+}
+{% endschema %}

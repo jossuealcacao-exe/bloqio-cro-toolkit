@@ -1,0 +1,134 @@
+.bloqio-topbar{
+  position: relative;
+  width: 100%;
+  background: var(--bt-bg);
+  color: var(--bt-text);
+  min-height: var(--bt-h);
+  display: none;
+  z-index: 9999;
+}
+
+/* When sticky is enabled we use fixed so the bar is always visible at the top */
+.bloqio-topbar.is-sticky{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+/* Simple, stable offset: push the whole page down by the bar height */
+body.bloqio-topbar--on{
+  padding-top: var(--bt-h, 40px) !important;
+}
+
+.bloqio-topbar__inner{
+  min-height: var(--bt-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 6px var(--bt-px);
+}
+
+/* Message area (icon + text) */
+.bloqio-topbar__msg{
+  font-size: 14px;
+  line-height: 1.2;
+  text-align: center;
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bt-icon-gap);
+}
+
+.bloqio-topbar__msgIcon{
+  width: var(--bt-icon-size);
+  height: var(--bt-icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bt-icon-color);
+  flex: 0 0 auto;
+}
+
+.bloqio-topbar__msgIcon svg{
+  width: var(--bt-icon-size);
+  height: var(--bt-icon-size);
+  display: block;
+}
+
+.bloqio-topbar__msgIcon svg *{
+  vector-effect: non-scaling-stroke;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.bloqio-topbar__cta{
+  color: var(--bt-accent);
+  text-decoration: underline;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.bloqio-topbar__x{
+  display: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--bt-text);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--bt-radius);
+}
+
+.bloqio-topbar.can-dismiss .bloqio-topbar__x{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 749px){
+  .bloqio-topbar__cta{ display: none; }
+}
+
+/* CTA styles (link vs button) */
+.bloqio-topbar__cta.is-link{
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.bloqio-topbar__cta.is-button{
+  text-decoration: none;
+  background: var(--bt-cta-bg);
+  color: var(--bt-cta-text);
+  border: 1px solid var(--bt-cta-border);
+  border-radius: var(--bt-cta-radius);
+  padding: var(--bt-cta-py) var(--bt-cta-px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.bloqio-topbar__cta.is-button:hover{
+  filter: brightness(0.96);
+}
+
+.bloqio-topbar__cta[aria-disabled="true"]{
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Theme Editor preview can add its own chrome; keep bar at top */
+html[style*="--bloqio-topbar-h"] .bloqio-topbar.is-sticky{
+  top: 0;
+}

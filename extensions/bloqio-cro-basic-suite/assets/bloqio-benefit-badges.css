@@ -1,0 +1,77 @@
+.bloqio-badges{
+  padding: var(--bb-pad-y) 0;
+}
+
+.bloqio-badges__inner{
+  width: min(100% - 40px, var(--bb-max));
+  margin: 0 auto;
+}
+
+.bloqio-badges__header{ margin-bottom: 16px; }
+.bloqio-badges__heading{ margin:0; line-height:1.1; }
+.bloqio-badges__subheading{ margin:8px 0 0; color: var(--bb-muted); }
+
+.bloqio-badges__grid{
+  display:grid;
+  grid-template-columns: repeat(var(--bb-cols), minmax(0, 1fr));
+  column-gap: var(--bb-gap-x);
+  row-gap: var(--bb-gap-y);
+}
+
+@media (max-width: 990px){
+  .bloqio-badges__grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px){
+  .bloqio-badges__grid{ grid-template-columns: 1fr; }
+}
+
+.bloqio-badges__item{
+  display:flex;
+  align-items:flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: var(--bb-border-w) solid var(--bb-border);
+  border-radius: var(--bb-radius);
+  background: var(--bb-bg);
+  color: var(--bb-text);
+  box-shadow: var(--bb-shadow);
+}
+
+.bloqio-badges__icon{
+  width: 36px;
+  height: 36px;
+  display:grid;
+  place-items:center;
+  color: var(--bb-icon);
+  border: 1px solid color-mix(in srgb, var(--bb-border) 70%, transparent);
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+
+.bloqio-badges__icon svg{
+  width: var(--bb-icon-size);
+  height: var(--bb-icon-size);
+  display:block;
+}
+
+.bloqio-badges__icon svg *{
+  vector-effect: non-scaling-stroke;
+  stroke-width: var(--bb-icon-stroke);
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.bloqio-badges__title{
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.bloqio-badges__desc{
+  margin-top: 4px;
+  color: var(--bb-muted);
+  line-height: 1.45;
+}
+
+.bloqio-badges__desc p{ margin:0; }

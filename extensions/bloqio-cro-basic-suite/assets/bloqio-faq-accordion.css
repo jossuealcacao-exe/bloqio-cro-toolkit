@@ -1,0 +1,101 @@
+.bloqio-faq{
+  padding: var(--bloqio-pad-y) 0;
+  background: var(--bloqio-bg);
+  color: var(--bloqio-text);
+}
+
+.bloqio-faq__inner{
+  width: min(100% - 40px, 1000px);
+  margin: 0 auto;
+}
+
+.bloqio-faq__header{ margin-bottom: 16px; }
+.bloqio-faq__heading{ margin:0; line-height:1.1; }
+.bloqio-faq__subheading{ margin:8px 0 0; opacity:.8; }
+
+.bloqio-faq__list{ display:grid; gap: var(--bloqio-item-gap); }
+
+.bloqio-faq__item{
+  border: var(--bloqio-border-w) solid var(--bloqio-border);
+  border-radius: var(--bloqio-radius);
+  background: var(--bloqio-item-bg);
+  overflow:hidden;
+}
+
+.bloqio-faq__summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding: var(--bloqio-item-pad-y) var(--bloqio-item-pad-x);
+}
+.bloqio-faq__summary::-webkit-details-marker{ display:none; }
+.bloqio-faq__summary::marker{ content:""; }
+.bloqio-faq__summary > *{ min-width:0; }
+
+.bloqio-faq__q{
+  flex:1 1 auto;
+  min-width:0;
+  font-size: var(--bloqio-q-size);
+  font-weight:650;
+  line-height:1.2;
+}
+
+.bloqio-faq__a{
+  padding: 0 var(--bloqio-item-pad-x) var(--bloqio-item-pad-y);
+  font-size: var(--bloqio-a-size);
+  line-height:1.5;
+}
+
+.bloqio-faq__icon{
+  flex:0 0 auto;
+  width: calc(var(--bloqio-icon-size) + (var(--bloqio-icon-pad)*2));
+  height: calc(var(--bloqio-icon-size) + (var(--bloqio-icon-pad)*2));
+  display:grid;
+  place-items:center;
+  border-radius: var(--bloqio-icon-radius);
+  background: color-mix(in srgb, var(--bloqio-icon-bg) calc(var(--bloqio-icon-bg-on) * 100%), transparent);
+  color: var(--bloqio-icon-color);
+  border: 1px solid color-mix(in srgb, var(--bloqio-border) 55%, transparent);
+  overflow:hidden;
+}
+
+.bloqio-faq__icon-svg,
+.bloqio-faq__icon-img{
+  width: var(--bloqio-icon-size);
+  height: var(--bloqio-icon-size);
+  display:block;
+  object-fit:contain;
+}
+
+.bloqio-faq__icon-svg *{
+  vector-effect: non-scaling-stroke;
+  stroke-width: var(--bloqio-icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  shape-rendering: geometricPrecision;
+}
+
+/* custom icon swap */
+.bloqio-faq__icon-img--open{ display:none; }
+details[open] > summary .bloqio-faq__icon-img--closed{ display:none; }
+details[open] > summary .bloqio-faq__icon-img--open{ display:block; }
+
+/* default plus -> minus */
+details[open] > summary .bloqio-icon__v{
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  transition: opacity .18s ease;
+  opacity: 0;
+}
+
+/* chevron rotate */
+.bloqio-faq[data-icon-style="chevron"] details[open] > summary .bloqio-faq__icon{
+  transform: rotate(180deg);
+  transition: transform .2s ease;
+}
+
+/* position left */
+.bloqio-faq[data-icon-pos="left"] .bloqio-faq__icon{ order:-1; }
