@@ -4,12 +4,14 @@ import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
-  // Shopify auth helper may either throw a Response (redirect/unauthorized)
-  // OR return a Response in some environments. Handle both explicitly.
+  // Let Shopify's auth helper do its thing.
+  // When the session is missing/invalid it throws a Response with the required
+  // reauth headers; our boundary.headers() will preserve them.
   const result = await authenticate.admin(request);
 
-  // If auth returned a Response (e.g. 401/302), return it so Shopify can reauthorize.
-  if (result instanceof Response) return result;
+  // In some environments it may return a Response instead of throwing.
+  // We MUST throw it so React Router runs `headers()` and Shopify sees the reauth headers.
+  if (result instanceof Response) throw result;
 
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
