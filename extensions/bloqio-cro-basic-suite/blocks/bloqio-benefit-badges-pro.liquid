@@ -1,3 +1,8 @@
+{%- comment -%}
+  Ensure assets are loaded from the Theme App Extension CDN.
+  (Some themes try to resolve relative asset URLs from the storefront domain.)
+{%- endcomment -%}
+{{ 'bloqio-benefit-badges.css' | asset_url | stylesheet_tag }}
 <section
   class="bloqio-badges"
   style="
