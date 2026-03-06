@@ -4,30 +4,10 @@ import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
-  try {
-    // If there is no valid session, Shopify's auth helpers often throw a Response
-    // (redirect or unauthorized). We catch that and redirect to /auth/login.
-    await authenticate.admin(request);
-  } catch (err) {
-    if (err instanceof Response) {
-      const url = new URL(request.url);
-      const shop = url.searchParams.get("shop");
-      const next = shop
-        ? `/auth/login?shop=${encodeURIComponent(shop)}`
-        : "/auth/login";
+  // Let Shopify's auth helpers throw their Response (redirect/unauthorized)
+  // and let the Shopify React Router boundary attach the correct headers.
+  await authenticate.admin(request);
 
-      return new Response(null, {
-        status: 302,
-        headers: {
-          Location: next,
-          "Cache-Control": "no-store",
-        },
-      });
-    }
-    throw err;
-  }
-
-  // eslint-disable-next-line no-undef
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
 
