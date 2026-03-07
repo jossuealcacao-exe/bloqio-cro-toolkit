@@ -14,16 +14,15 @@
 }
 
 .bloqio-faq__inner{
-  /* FULL WIDTH (no hidden max-width). Theme section controls the outer width. */
-  width: 100%;
-  max-width: none;
-  margin: 0;
+  /* FULL WIDTH: remove any centering/max-width constraints */
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
 
-  /* Nice gutters on big screens without looking “encajonado” */
-  padding: 0 clamp(16px, 4vw, 56px);
+  /* Keep a small, consistent gutter so it looks clean on all screens */
+  padding: 0 16px;
 
   box-sizing: border-box;
-  /* Also stretch the inner wrapper when the parent is a grid item */
   justify-self: stretch;
   align-self: stretch;
 }
@@ -37,6 +36,8 @@
   gap: var(--bloqio-item-gap);
   width: 100%;
   max-width: 100%;
+  margin: 0;
+  justify-items: stretch;
 }
 
 .bloqio-faq__item{
@@ -45,6 +46,7 @@
   background: var(--bloqio-item-bg);
   overflow:hidden;
   width: 100%;
+  max-width: none !important;
   
 }
 /* open state: subtle divider */
@@ -174,3 +176,11 @@ details[open] > summary .bloqio-icon__v{
   Fix (Theme Editor): move this app block into an OS 2.0 "Apps" section
   or set the section width to "Completo" and the section layout to single column.
 */
+
+ /* Hard override: if any theme wrapper applies a max-width to app blocks, kill it */
+.shopify-section .bloqio-faq,
+.shopify-section .bloqio-faq__inner,
+.shopify-section .bloqio-faq__list{
+  max-width: none !important;
+  width: 100% !important;
+}
