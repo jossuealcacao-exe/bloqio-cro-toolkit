@@ -5,8 +5,13 @@
 }
 
 .bloqio-faq__inner{
-  width: min(100% - 40px, 1000px);
+  width: 100%;
+  /* Full-width by default. If you ever want to constrain it, set --bloqio-faq-max-w (e.g. 1080px) */
+  max-width: var(--bloqio-faq-max-w, 100%);
   margin: 0 auto;
+  /* Keep comfortable page gutters; can be overridden with --bloqio-faq-pad-x */
+  padding: 0 var(--bloqio-faq-pad-x, 16px);
+  box-sizing: border-box;
 }
 
 .bloqio-faq__header{ margin-bottom: 16px; }
@@ -20,6 +25,11 @@
   border-radius: var(--bloqio-radius);
   background: var(--bloqio-item-bg);
   overflow:hidden;
+  
+}
+/* open state: subtle divider */
+.bloqio-faq__item[open] .bloqio-faq__summary{
+  border-bottom: var(--bloqio-border-w) solid var(--bloqio-border);
 }
 
 .bloqio-faq__summary{
@@ -30,6 +40,16 @@
   justify-content:space-between;
   gap:14px;
   padding: var(--bloqio-item-pad-y) var(--bloqio-item-pad-x);
+}
+/* hover + focus states */
+.bloqio-faq__summary:hover{
+  background: color-mix(in srgb, var(--bloqio-item-bg) 92%, var(--bloqio-accent));
+}
+
+.bloqio-faq__summary:focus-visible{
+  outline: 2px solid color-mix(in srgb, var(--bloqio-accent) 65%, transparent);
+  outline-offset: 2px;
+  border-radius: calc(var(--bloqio-radius) - 2px);
 }
 .bloqio-faq__summary::-webkit-details-marker{ display:none; }
 .bloqio-faq__summary::marker{ content:""; }
@@ -92,10 +112,20 @@ details[open] > summary .bloqio-icon__v{
 }
 
 /* chevron rotate */
+/* chevron: smooth rotate both ways */
+.bloqio-faq[data-icon-style="chevron"] .bloqio-faq__icon{
+  transition: transform .2s ease;
+  transform: rotate(0deg);
+}
+
 .bloqio-faq[data-icon-style="chevron"] details[open] > summary .bloqio-faq__icon{
   transform: rotate(180deg);
-  transition: transform .2s ease;
 }
 
 /* position left */
 .bloqio-faq[data-icon-pos="left"] .bloqio-faq__icon{ order:-1; }
+@media (max-width: 480px){
+  .bloqio-faq__inner{ padding: 0 12px; }
+  .bloqio-faq__summary{ padding: 14px 14px; }
+  .bloqio-faq__a{ padding: 0 14px 14px; }
+}
