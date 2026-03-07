@@ -14,9 +14,11 @@
   {%- assign bloqio_messages = block.settings.messages | strip -%}
 {%- endif -%}
 
+{% if block.settings.enabled %}
 <div
-  id="bloqio-topbar"
+  id="bloqio-topbar-{{ block.id }}"
   class="bloqio-topbar"
+  data-block-id="{{ block.id }}"
   data-bloqio-sprite-url="{{ 'bloqio-icons.svg' | asset_url }}"
   data-enabled="{{ block.settings.enabled }}"
   data-sticky="{{ block.settings.sticky }}"
@@ -35,7 +37,7 @@
   data-countdown-end="{{ block.settings.countdown_year }}-{{ block.settings.countdown_month }}-{{ block.settings.countdown_day }} {{ block.settings.countdown_hour }}:{{ block.settings.countdown_minute }}"
   data-countdown-prefix="{{ block.settings.countdown_prefix | escape }}"
   data-countdown-suffix="{{ block.settings.countdown_suffix | escape }}"
-  data-messages='{{ bloqio_messages | replace: "'", "&#39;" | replace: '"', '&quot;' }}'
+  data-messages="{{ bloqio_messages | escape }}"
   data-cta-style="{{ block.settings.cta_style }}"
   style="
     --bt-bg: {{ block.settings.bg }};
@@ -73,7 +75,7 @@
     </button>
   </div>
 </div>
-
+{% endif %}
 {% schema %}
 {
   "name": "Bloqio TopBar PRO",
