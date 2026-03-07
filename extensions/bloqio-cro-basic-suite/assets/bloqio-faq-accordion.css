@@ -2,15 +2,23 @@
   padding: var(--bloqio-pad-y) 0;
   background: var(--bloqio-bg);
   color: var(--bloqio-text);
+
+  /* ensure the app block can stretch to full available width */
+  width: 100%;
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .bloqio-faq__inner{
+  /* FULL WIDTH (no hidden max-width). Theme section controls the outer width. */
   width: 100%;
-  /* Full-width by default. If you ever want to constrain it, set --bloqio-faq-max-w (e.g. 1080px) */
-  max-width: var(--bloqio-faq-max-w, 100%);
-  margin: 0 auto;
-  /* Keep comfortable page gutters; can be overridden with --bloqio-faq-pad-x */
-  padding: 0 var(--bloqio-faq-pad-x, 16px);
+  max-width: none;
+  margin: 0;
+
+  /* Nice gutters on big screens without looking “encajonado” */
+  padding: 0 clamp(16px, 4vw, 56px);
+
   box-sizing: border-box;
 }
 
@@ -18,13 +26,19 @@
 .bloqio-faq__heading{ margin:0; line-height:1.1; }
 .bloqio-faq__subheading{ margin:8px 0 0; opacity:.8; }
 
-.bloqio-faq__list{ display:grid; gap: var(--bloqio-item-gap); }
+.bloqio-faq__list{
+  display: grid;
+  gap: var(--bloqio-item-gap);
+  width: 100%;
+  max-width: 100%;
+}
 
 .bloqio-faq__item{
   border: var(--bloqio-border-w) solid var(--bloqio-border);
   border-radius: var(--bloqio-radius);
   background: var(--bloqio-item-bg);
   overflow:hidden;
+  width: 100%;
   
 }
 /* open state: subtle divider */
@@ -40,6 +54,8 @@
   justify-content:space-between;
   gap:14px;
   padding: var(--bloqio-item-pad-y) var(--bloqio-item-pad-x);
+  width: 100%;
+  box-sizing: border-box;
 }
 /* hover + focus states */
 .bloqio-faq__summary:hover{
@@ -67,6 +83,7 @@
   padding: 0 var(--bloqio-item-pad-x) var(--bloqio-item-pad-y);
   font-size: var(--bloqio-a-size);
   line-height:1.5;
+  box-sizing: border-box;
 }
 
 .bloqio-faq__icon{
@@ -128,4 +145,16 @@ details[open] > summary .bloqio-icon__v{
   .bloqio-faq__inner{ padding: 0 12px; }
   .bloqio-faq__summary{ padding: 14px 14px; }
   .bloqio-faq__a{ padding: 0 14px 14px; }
+}
+
+/* If the theme wraps app blocks inside flex/grid, prevent the FAQ from shrinking */
+.bloqio-faq,
+.bloqio-faq *{
+  min-width: 0;
+}
+
+/* Optional: slightly nicer spacing on very large screens */
+@media (min-width: 1200px){
+  .bloqio-faq__header{ margin-bottom: 20px; }
+  .bloqio-faq__summary{ gap: 16px; }
 }
