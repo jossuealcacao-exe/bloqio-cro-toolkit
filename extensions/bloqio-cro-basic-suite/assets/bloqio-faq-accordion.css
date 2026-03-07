@@ -8,6 +8,9 @@
   display: block;
   flex: 1 1 auto;
   min-width: 0;
+  /* If the theme places app blocks in CSS Grid/Flex columns, force this block to stretch */
+  justify-self: stretch;
+  align-self: stretch;
 }
 
 .bloqio-faq__inner{
@@ -20,6 +23,9 @@
   padding: 0 clamp(16px, 4vw, 56px);
 
   box-sizing: border-box;
+  /* Also stretch the inner wrapper when the parent is a grid item */
+  justify-self: stretch;
+  align-self: stretch;
 }
 
 .bloqio-faq__header{ margin-bottom: 16px; }
@@ -158,3 +164,13 @@ details[open] > summary .bloqio-icon__v{
   .bloqio-faq__header{ margin-bottom: 20px; }
   .bloqio-faq__summary{ gap: 16px; }
 }
+
+/*
+  NOTE:
+  If you still see “blank space on the right” inside the blue Theme Editor section,
+  that’s the THEME section layout (2-column/boxed container) limiting the area.
+  CSS inside the app block can’t exceed the parent container.
+
+  Fix (Theme Editor): move this app block into an OS 2.0 "Apps" section
+  or set the section width to "Completo" and the section layout to single column.
+*/
